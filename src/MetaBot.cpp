@@ -43,7 +43,7 @@ void MetaBot::onStart() {
 	DWORD dwParam1;
 	UINT  uParam2, uReturnVal;
 
-	hDLL = LoadLibrary((LPCWSTR)"Skynet.dll");
+	hDLL = LoadLibrary(_T("Skynet.dll"));
 	if (hDLL != NULL) {
 		logger->log("Successfully loaded DLL!");
 		lpfnDllFunc1 = (LPFNDLLFUNC1)GetProcAddress(hDLL,
@@ -57,6 +57,9 @@ void MetaBot::onStart() {
 			// call the function
 			uReturnVal = lpfnDllFunc1(dwParam1, uParam2);
 		}
+	}
+	else { //hDLL is null
+		logger->log("Failed to load DLL :(");
 	}
 
 	//initializes and registers meta strategy (strategy selector)
