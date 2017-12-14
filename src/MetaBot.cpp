@@ -37,40 +37,42 @@ void MetaBot::onStart() {
     Configuration::getInstance()->parseConfig();
 
 	typedef UINT(CALLBACK* LPFNDLLFUNC1)(DWORD, UINT);
+	typedef AIModule* (*PFNCreateA1)(BWAPI::Game*);
 
 	HINSTANCE hDLL;               // Handle to DLL
 	LPFNDLLFUNC1 lpfnDllFunc1;    // Function pointer
 	DWORD dwParam1;
 	UINT  uParam2, uReturnVal;
 
-	hDLL = LoadLibrary(_T("Skynet.dll"));
+	hDLL = LoadLibrary(_T("bwapi-data//AI//Skynet.dll"));
 	if (hDLL != NULL) {
 		logger->log("Successfully loaded DLL!");
-		lpfnDllFunc1 = (LPFNDLLFUNC1)GetProcAddress(hDLL,
-			"DLLFunc1");
-		if (!lpfnDllFunc1) {
-			// handle the error
-			FreeLibrary(hDLL);
-			return;
+		// Obtain the AI module function
+		PFNCreateA1 newAIModule = (PFNCreateA1)GetProcAddress(hDLL, "newAIModule");
+		if (newAIModule) {
+			// Call the AI module function and assign the client variable
+			currentStrategy = newAIModule(Broodwar);
+			logger->log("Successfully created AIModule!");
 		}
 		else {
-			// call the function
-			uReturnVal = lpfnDllFunc1(dwParam1, uParam2);
+			logger->log("Failed to use newAIModule function");
 		}
 	}
 	else { //hDLL is null
 		logger->log("Failed to load DLL :(");
 	}
 
+	currentStrategy->onStart();
+
 	//initializes and registers meta strategy (strategy selector)
-	metaStrategy = MetaStrategyManager::getMetaStrategy();
+	/*metaStrategy = MetaStrategyManager::getMetaStrategy();
 	MatchData::getInstance()->registerMetaStrategy(metaStrategy->getName());
 	metaStrategy->onStart();
 
 	//retrieves strategy to begin match
 	currentStrategy = metaStrategy->getCurrentStrategy();
-
-    //Broodwar->sendText("%s on!", myBehaviorName.c_str());		//sends behavior communication message
+	
+   
 	logger->log("Game started with %s !", metaStrategy->getCurrentStrategyName().c_str());
 
     MatchData::getInstance()->registerMyBehaviorName(metaStrategy->getCurrentStrategyName());
@@ -78,10 +80,10 @@ void MetaBot::onStart() {
     //currentBehavior->onStart();
 
     MatchData::getInstance()->writeToCrashFile();
-
+	*/
 	//initializes game state manager
 	GameStateManager::getInstance();
-
+	
     //sets user input, speed and GUI 
     Broodwar->enableFlag(Flag::UserInput);
 
@@ -95,7 +97,7 @@ void MetaBot::onStart() {
 }
 
 void MetaBot::onEnd(bool isWinner) {
-	string strategyName = metaStrategy->getCurrentStrategyName();
+	/*string strategyName = metaStrategy->getCurrentStrategyName();
 
     logger->log("Game ended well with %s.", strategyName.c_str());
     
@@ -115,16 +117,14 @@ void MetaBot::onEnd(bool isWinner) {
 		result = MatchData::LOSS;
 		logger->log("Defeat :( Finishing behavior: %s.", strategyName.c_str());
 	}
-
-    //MetaStrategy::getInstance()->addResult(win);
-    //MetaStrategy::getInstance()->saveStats();
-    //Statistics::getInstance()->saveResult(win);
-
+	*/
+    
+	/*
     MatchData::getInstance()->registerMatchFinish(result);
     MatchData::getInstance()->writeSummary();
     MatchData::getInstance()->writeDetailedResult();
     MatchData::getInstance()->updateCrashFile();	//TODO: valid only for epsilon-greedy!
-
+	*/
 	currentStrategy->onEnd(isWinner);
 	logger->log("Finished.");
 }
@@ -144,21 +144,22 @@ void MetaBot::onFrame() {
 		Broodwar->leaveGame();
         return;
     }
-
+	/*
 	if(Broodwar->getFrameCount() == 0){ logger->log("first metaStrategy->onFrame()"); }
 	metaStrategy->onFrame();	//might switch strategy so I update currentStrategy below
 
 	if(Broodwar->getFrameCount() == 0){ logger->log("first strategy->onFrame()"); }
 	currentStrategy = metaStrategy->getCurrentStrategy();
+	*/
 	currentStrategy->onFrame();
-
+	
 	if(Broodwar->getFrameCount() == 0){ logger->log("first gameStateManager->onFrame()"); }
 	GameStateManager::getInstance()->onFrame();
 
 	//draws some text
     Broodwar->drawTextScreen(240, 20, "\x0F MetaBot v1.0.2");
-	Broodwar->drawTextScreen(240, 35, "\x0F Meta strategy: %s", metaStrategy->getName().c_str());
-	Broodwar->drawTextScreen(240, 50, "\x0F Strategy: %s", metaStrategy->getCurrentStrategyName().c_str());
+	//Broodwar->drawTextScreen(240, 35, "\x0F Meta strategy: %s", metaStrategy->getName().c_str());
+	//Broodwar->drawTextScreen(240, 50, "\x0F Strategy: %s", metaStrategy->getCurrentStrategyName().c_str());
     Broodwar->drawTextScreen(240, 65, "\x0F Enemy: %s", Broodwar->enemy()->getName().c_str());
 	Broodwar->drawTextScreen(240, 80, "Frame count %d.", Broodwar->getFrameCount());
     Broodwar->drawTextScreen(240, 95, "Seconds: %d.", Broodwar->elapsedTime());
