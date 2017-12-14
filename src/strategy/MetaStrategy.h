@@ -15,7 +15,7 @@ using namespace std;
 class MetaStrategy {
 
 private:   
-
+	
 
 protected:
 	//name of behavior in previous frame
@@ -43,6 +43,12 @@ public:
 
 	MetaStrategy();
     ~MetaStrategy();
+
+	/**
+	* Loads an AI module given its name
+	* (DLL must be located in the directory specified in Config)
+	*/
+	BWAPI::AIModule* loadAIModule(string moduleName);
 
 	static const string SKYNET;		//"Skynet"
 	static const string XELNAGA;	//"Xelnaga"

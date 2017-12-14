@@ -5,11 +5,6 @@
 #include <cfloat>
 #include "BWAPI.h"
 #include "MetaStrategy.h"
-/*
-#include "Xelnaga.h"
-#include "Skynet.h"
-#include "NUSBotModule.h"
-*/
 #include "../MetaBot.h"
 #include "../data/Configuration.h"
 #include "../utils/tinyxml2.h"
@@ -50,6 +45,51 @@ MetaStrategy::~MetaStrategy() {
 
 BWAPI::AIModule* MetaStrategy::getCurrentStrategy(){
 	return currentStrategy;
+}
+
+BWAPI::AIModule* MetaStrategy::loadAIModule(string moduleName) {
+	//the signature of the function that creates an AI module
+	typedef BWAPI::AIModule* (*PFNCreateAI)(BWAPI::Game*);
+
+	BWAPI::AIModule* newAI;
+
+	HINSTANCE hDLL;               // Handle to DLL]
+
+	Logging* logger = Logging::getInstance();
+	string path = Configuration::getInstance()->INPUT_DIR + moduleName + ".dll";
+
+	// conversion to LPWSTR, which is the type of string that LoadLibrary accepts
+	wchar_t wPath[MAX_PATH];
+	mbstowcs(wPath, path.c_str(), strlen(path.c_str()) + 1);//Plus null
+	LPWSTR ptr = wPath;
+
+	// attempts to load the library and call newAIModule
+	// on error, loads dummy AI
+	hDLL = LoadLibrary(ptr);
+	if (hDLL != NULL) {
+		logger->log("Successfully loaded %s's DLL.", moduleName.c_str());
+		// Obtain the AI module function
+		PFNCreateAI newAIModule = (PFNCreateAI)GetProcAddress(hDLL, "newAIModule");
+		//PFNGameInit gameInitFunction;    // Function pointer
+
+		//gameInitFunction = (PFNGameInit)GetProcAddress(hDLL, "gameInit");
+		//hrReturnVal = gameInitFunction(Broodwar);
+		if (newAIModule) {
+			// Call the AI module function and assign the client variable
+			newAI = newAIModule(Broodwar);
+			logger->log("Successfully created '%s' module.", moduleName.c_str());
+		}
+		else {
+			logger->log("Failed to use newAIModule for '%s'. Loading dummy", moduleName.c_str());
+			newAI = new AIModule();
+		}
+	}
+	else { //hDLL is null
+		logger->log("Failed to load '%s'!. Loading dummy", path.c_str());
+		newAI = new AIModule();
+	}
+
+	return newAI;
 }
 
 std::string MetaStrategy::getCurrentStrategyName(){

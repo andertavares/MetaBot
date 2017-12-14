@@ -36,31 +36,9 @@ void MetaBot::onStart() {
     MatchData::getInstance()->registerMatchBegin();
     Configuration::getInstance()->parseConfig();
 
-	typedef UINT(CALLBACK* LPFNDLLFUNC1)(DWORD, UINT);
-	typedef AIModule* (*PFNCreateA1)(BWAPI::Game*);
-
-	HINSTANCE hDLL;               // Handle to DLL
-	LPFNDLLFUNC1 lpfnDllFunc1;    // Function pointer
-	DWORD dwParam1;
-	UINT  uParam2, uReturnVal;
-
-	hDLL = LoadLibrary(_T("bwapi-data//AI//Skynet.dll"));
-	if (hDLL != NULL) {
-		logger->log("Successfully loaded DLL!");
-		// Obtain the AI module function
-		PFNCreateA1 newAIModule = (PFNCreateA1)GetProcAddress(hDLL, "newAIModule");
-		if (newAIModule) {
-			// Call the AI module function and assign the client variable
-			currentStrategy = newAIModule(Broodwar);
-			logger->log("Successfully created AIModule!");
-		}
-		else {
-			logger->log("Failed to use newAIModule function");
-		}
-	}
-	else { //hDLL is null
-		logger->log("Failed to load DLL :(");
-	}
+	//typedef void(*PFNGameInit)(BWAPI::Game*);
+	metaStrategy = MetaStrategyManager::getMetaStrategy();
+	currentStrategy = metaStrategy->loadAIModule("Skynet");
 
 	currentStrategy->onStart();
 
