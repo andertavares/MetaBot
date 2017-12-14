@@ -58,14 +58,16 @@ BWAPI::AIModule* MetaStrategy::loadAIModule(string moduleName) {
 	Logging* logger = Logging::getInstance();
 	string path = Configuration::getInstance()->INPUT_DIR + moduleName + ".dll";
 
-	// conversion to LPWSTR, which is the type of string that LoadLibrary accepts
+	// conversion to LPWSTR, which is the type of string that LoadLibrary accepts on Unicode
+	/*
 	wchar_t wPath[MAX_PATH];
 	mbstowcs(wPath, path.c_str(), strlen(path.c_str()) + 1);//Plus null
 	LPWSTR ptr = wPath;
+	*/
 
 	// attempts to load the library and call newAIModule
 	// on error, loads dummy AI
-	hDLL = LoadLibrary(ptr);
+	hDLL = LoadLibrary(path.c_str());
 	if (hDLL != NULL) {
 		logger->log("Successfully loaded %s's DLL.", moduleName.c_str());
 		// Obtain the AI module function
