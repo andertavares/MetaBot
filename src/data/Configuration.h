@@ -2,6 +2,7 @@
 #define __CONFIGURATION_H__
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -49,6 +50,9 @@ public:
 	/** rate of exploration for epsilon-greedy */
 	float epsilon;
 
+	/** list of strings with the names of portfolio members */
+	vector<string> portfolioNames;
+
 	/** Returns the singleton instance of this class */
 	static Configuration* getInstance();
 
@@ -72,7 +76,7 @@ public:
 	static const string INPUT_DIR;
 
 	//Directory to write output to
-	static string OUTPUT_DIR;
+	static string WRITE_DIR;
 
     //Directory to read informations about the tournament
     static string READ_DIR;
@@ -112,6 +116,12 @@ public:
 
 	//xml field that contains epsilon
 	static const string FIELD_EPSILON;
+
+	//xml field that contais the portfolio
+	static const string FIELD_PORTFOLIO;
+
+	//xml field that contains a strategy
+	static const string FIELD_STRATEGY;
 };
 
 #endif

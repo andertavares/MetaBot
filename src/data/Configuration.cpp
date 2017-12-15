@@ -9,7 +9,7 @@
 
 //BEGIN: change these if you need to read/write in different folders
 const string Configuration::INPUT_DIR = "bwapi-data/AI/";
-string Configuration::OUTPUT_DIR = "bwapi-data/write/";
+string Configuration::WRITE_DIR = "bwapi-data/write/";
 string Configuration::READ_DIR = "bwapi-data/read/";
 //END: change these if you need to read/write in different folders
 
@@ -27,17 +27,20 @@ const string Configuration::FIELD_ENABLE_GUI = "gui";
 const string Configuration::FIELD_ALPHA = "alpha";
 const string Configuration::FIELD_EPSILON = "epsilon";
 
+const string Configuration::FIELD_PORTFOLIO = "portfolio";
+const string Configuration::FIELD_STRATEGY = "strategy";
+
 const string Configuration::WIN_TABLE_FILE = "win-table"; 
 
 Configuration* Configuration::instance = NULL;
 
 Configuration::Configuration() {
 	//sets up default values
-	matchDataFile = OUTPUT_DIR + "output.xml";
+	matchDataFile = WRITE_DIR + "output.xml";
     //readDataFile = READ_DIR + "output.xml";
     strategyFile = INPUT_DIR + "metabot_protoss-uniform.xml";
 
-	enemyInformationPrefix = "MetaBot-vs-";
+	enemyInformationPrefix = "score_MetaBot-vs-";
     crashInformationPrefix = "crash_MetaBot-vs-";
 
 	metaStrategyID = "epsilon-greedy"; 
@@ -65,7 +68,7 @@ string Configuration::enemyInformationInputFile(){
 }
 
 string Configuration::enemyInformationOutputFile(){
-	return OUTPUT_DIR + enemyInformationPrefix + _enemyName() + ".xml";
+	return WRITE_DIR + enemyInformationPrefix + _enemyName() + ".xml";
 }
 
 string Configuration::crashInformationInputFile() {
@@ -73,7 +76,7 @@ string Configuration::crashInformationInputFile() {
 }
 
 string Configuration::crashInformationOutputFile() {
-    return OUTPUT_DIR + crashInformationPrefix + _enemyName() + ".xml";
+    return WRITE_DIR + crashInformationPrefix + _enemyName() + ".xml";
 }
 
 bool _isSpace(char caracter) {
@@ -137,7 +140,7 @@ void Configuration::parseConfig() {
     //write directoy
     element = doc.FirstChildElement("config")->FirstChildElement(FIELD_WRITE_DIR.c_str());
     if (element) {
-        Configuration::OUTPUT_DIR = string(element->Attribute("value"));
+        Configuration::WRITE_DIR = string(element->Attribute("value"));
     }
 
 	//victory scorechart
@@ -159,14 +162,18 @@ void Configuration::parseConfig() {
 		element->QueryFloatAttribute("value", &epsilon);
 	}
 
-	//traverses the XML looking for configurations
-	/*
-	for (XMLNode* data = doc.FirstChild()->FirstChild(); data; data = data->NextSibling()) {
-		if (data->ToText())
-	}*/
-
-	//if matchDataFile <<
-	//if buildOrderID <<
+	// <portfolio> -- traverses all <strategy value="yyy" />  
+	element = doc.FirstChildElement("config")->FirstChildElement(FIELD_PORTFOLIO.c_str());
+	if (element) {
+		XMLElement* strategy;
+		strategy = element->FirstChildElement(FIELD_STRATEGY.c_str());
+		while (strategy != NULL) {
+			string name = strategy->Attribute("value");
+			Logging::getInstance()->log("Adding strategy %s to the portfolio", name.c_str());
+			portfolioNames.push_back(name);
+			strategy = strategy->NextSiblingElement();
+		}
+	}
 
 
 }

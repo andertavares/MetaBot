@@ -188,7 +188,7 @@ string MatchData::resultToString(int result) {
 
 string MatchData::getSummaryFilename() {
     stringstream ss;
-    ss << Configuration::OUTPUT_DIR;	//bwapi-data/AI or /write
+    ss << Configuration::WRITE_DIR;	//bwapi-data/AI or /write
     //ss << "bwapi-data\\write\\"; //Tournament persistent storage version
     ss << "metabot_matchsummary.csv";
 

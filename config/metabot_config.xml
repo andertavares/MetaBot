@@ -3,10 +3,17 @@
   <!-- possible values: probabilistic, epsilon-greedy, random-switch, Xelnaga, Skynet, NUSBot -->
   <meta-strategy value="epsilon-greedy" />
 
-  <strategy-file value="metabot_protoss-uniform.xml" /> <!-- probabilities for Probabilistic strategy selection -->
+  <portfolio>
+    <strategy value="Skynet" />
+    <strategy value="Xelnaga" />
+    <strategy value="NUSBot" />
+  </portfolio>
+  
 	<read-dir value="bwapi-data/read/" />
 	<write-dir value="bwapi-data/write/" />
+  
 	<match-output value="output.xml" />
+  
 	<alpha value="0.2" /> <!-- learning rate for strategy value update on epsilon-greedy -->
 	<epsilon value="0.15" /> <!-- exploration coefficient  on epsilon-greedy  -->
 	<speed value="0" />

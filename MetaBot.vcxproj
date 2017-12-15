@@ -141,7 +141,7 @@
     <ClInclude Include="src\utils\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\megabot_config.xml" />
+    <None Include="config\metabot_config.xml" />
     <None Include="config\megabot_protoss-nash.xml" />
     <None Include="config\megabot_protoss-uniform.xml" />
     <None Include="config\README.txt" />

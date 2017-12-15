@@ -26,8 +26,8 @@ Logging::Logging() : logLevel(Logging::INFO){
 	 */
 
 	//int logCount = 0;
-	string pathPrefix =  Configuration::OUTPUT_DIR + "log_MetaBot-vs-" + _enemyName();
-	filename = Configuration::OUTPUT_DIR + "log_default-MetaBot-vs-" + _enemyName() + ".log";	//default filename
+	string pathPrefix =  Configuration::WRITE_DIR + "log_MetaBot-vs-" + _enemyName();
+	filename = Configuration::WRITE_DIR + "log_default-MetaBot-vs-" + _enemyName() + ".log";	//default filename
 
 	string writePattern = pathPrefix + "*.log";
 	string readPattern = Configuration::READ_DIR + "log_MetaBot-vs-" + _enemyName() + "*.log";

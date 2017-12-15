@@ -58,13 +58,6 @@ BWAPI::AIModule* MetaStrategy::loadAIModule(string moduleName) {
 	Logging* logger = Logging::getInstance();
 	string path = Configuration::getInstance()->INPUT_DIR + moduleName + ".dll";
 
-	// conversion to LPWSTR, which is the type of string that LoadLibrary accepts on Unicode
-	/*
-	wchar_t wPath[MAX_PATH];
-	mbstowcs(wPath, path.c_str(), strlen(path.c_str()) + 1);//Plus null
-	LPWSTR ptr = wPath;
-	*/
-
 	// attempts to load the library and call newAIModule
 	// on error, loads dummy AI
 	hDLL = LoadLibrary(path.c_str());
@@ -72,10 +65,10 @@ BWAPI::AIModule* MetaStrategy::loadAIModule(string moduleName) {
 		logger->log("Successfully loaded %s's DLL.", moduleName.c_str());
 		// Obtain the AI module function
 		PFNCreateAI newAIModule = (PFNCreateAI)GetProcAddress(hDLL, "newAIModule");
-		//PFNGameInit gameInitFunction;    // Function pointer
+		// The two lines below might be needed in BWAPI 4.1.2
+		//PFNGameInit gameInitFunction = (PFNGameInit)GetProcAddress(hDLL, "gameInit");    
+		//gameInitFunction(Broodwar);
 
-		//gameInitFunction = (PFNGameInit)GetProcAddress(hDLL, "gameInit");
-		//hrReturnVal = gameInitFunction(Broodwar);
 		if (newAIModule) {
 			// Call the AI module function and assign the client variable
 			newAI = newAIModule(Broodwar);

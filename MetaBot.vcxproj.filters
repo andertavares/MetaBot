@@ -157,9 +157,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\megabot_config.xml">
-      <Filter>config</Filter>
-    </None>
     <None Include="config\megabot_protoss-nash.xml">
       <Filter>config</Filter>
     </None>
@@ -167,6 +164,9 @@
       <Filter>config</Filter>
     </None>
     <None Include="config\README.txt">
+      <Filter>config</Filter>
+    </None>
+    <None Include="config\metabot_config.xml">
       <Filter>config</Filter>
     </None>
   </ItemGroup>

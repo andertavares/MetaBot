@@ -11,7 +11,7 @@ GameStateManager* GameStateManager::instance = NULL;
 
 GameStateManager::GameStateManager(void) : frequency(500) {
 	//counts number of previous state dump files
-	string prefix = Configuration::OUTPUT_DIR + 
+	string prefix = Configuration::WRITE_DIR + 
 		"states_MetaBot-vs-" + 
 		BWAPI::Broodwar->enemy()->getName();
 
