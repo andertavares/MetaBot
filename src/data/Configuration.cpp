@@ -169,7 +169,7 @@ void Configuration::parseConfig() {
 		strategy = element->FirstChildElement(FIELD_STRATEGY.c_str());
 		while (strategy != NULL) {
 			string name = strategy->Attribute("value");
-			Logging::getInstance()->log("Adding strategy %s to the portfolio", name.c_str());
+			Logging::getInstance()->log("Adding strategy %s to the list.", name.c_str());
 			portfolioNames.push_back(name);
 			strategy = strategy->NextSiblingElement();
 		}

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <ctime>
 #include <cfloat>
+#include <vector>
 #include "BWAPI.h"
 #include "MetaStrategy.h"
 #include "../MetaBot.h"
@@ -24,15 +25,18 @@ MetaStrategy::MetaStrategy() /*: rng(std::time(0))*/ {
 	name = "none";
 
 	//initalizes behaviors
-    /*portfolio.insert(make_pair(SKYNET, new Skynet()));
-    portfolio.insert(make_pair(XELNAGA, new Xelnaga()));
-    portfolio.insert(make_pair(NUSBot, new NUSBotModule()));
-	*/
+	vector<string> &portfolioNames = Configuration::getInstance()->portfolioNames;
+	vector<string>::iterator it;
+
+	for (it = portfolioNames.begin(); it != portfolioNames.end(); it++) {
+		Logging::getInstance()->log("Adding '%s' to the portfolio.", it->c_str());
+		portfolio.insert(make_pair(*it, loadAIModule(*it)));
+	}
 
     //initializes reverse map
 	map<string, BWAPI::AIModule*>::iterator behv;
 	for(behv = portfolio.begin(); behv != portfolio.end(); behv++){
-		strategyNames.insert(make_pair((*behv).second, (*behv).first));
+		strategyNames.insert(make_pair(behv->second, behv->first));
 		//Logging::getInstance()->log("Added %s to reverse map", (*behv).first.c_str() );
     }
 
