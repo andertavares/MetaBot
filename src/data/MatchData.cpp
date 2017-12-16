@@ -205,12 +205,11 @@ void MatchData::writeSummary() {
     //ss << MetaStrategy::getInstance()->getStrategyID() << ";";
     ss << Broodwar->enemy()->getRace().getName() << ";";
 	ss << Broodwar->enemy()->getName() << ";";
-    ss << enemyBehaviorName << ";";
+    //ss << enemyBehaviorName << ";";
     ss << Broodwar->mapFileName() << ";";
-    if (gameResult == WIN) ss << "Won";
-    if (gameResult == LOSS) ss << "Lost";
-    if (gameResult == DRAW) ss << "Draw";
-    ss << ";";
+	if (gameResult == WIN) ss << "Won;";
+	if (gameResult == LOSS) ss << "Lost;";
+	if (gameResult == DRAW) ss << "Draw;";
     ss << Broodwar->self()->getUnitScore() << ";";
 	ss << Broodwar->self()->getKillScore() << ";";
     ss << Broodwar->self()->getBuildingScore() << ";";
