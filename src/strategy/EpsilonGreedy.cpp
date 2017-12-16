@@ -64,6 +64,7 @@ void EpsilonGreedy::onStart() {
                 string best_name;
                 float best_score = -1.0f;
 
+				//TODO traverse the strategy names!
                 map<string, float> scoresMap;
 				scoresMap[MetaStrategy::NUSBot] = 0;
                 scoresMap[MetaStrategy::SKYNET] = 0;

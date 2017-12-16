@@ -3,6 +3,7 @@
 
 #include <BWAPI.h>
 #include "../utils/Logging.h"
+#include <boost/random/mersenne_twister.hpp>
 /*
 #include "Xelnaga.h"
 #include "Skynet.h"
@@ -21,7 +22,7 @@ protected:
 	//name of behavior in previous frame
     //string oldBehaviorName;
 
-	//boost::mt19937 rng; //mersenne twister random number generator
+	boost::mt19937 rng; //mersenne twister random number generator
 
 	/** Active behavior (corresponds to a bot) */
 	BWAPI::AIModule* currentStrategy;

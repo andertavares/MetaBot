@@ -14,6 +14,7 @@
 #include "EpsilonGreedy.h"
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
 
 
 //initializes consts
@@ -21,7 +22,7 @@ const string MetaStrategy::SKYNET = "Skynet";
 const string MetaStrategy::XELNAGA = "Xelnaga";
 const string MetaStrategy::NUSBot = "NUSBot";
 
-MetaStrategy::MetaStrategy() /*: rng(std::time(0))*/ {
+MetaStrategy::MetaStrategy() : rng(std::time(0)) {
 	name = "none";
 
 	//initalizes behaviors
@@ -99,8 +100,8 @@ void MetaStrategy::onStart() {
 	map<string, BWAPI::AIModule*>::iterator behv;
 
 	for(behv = portfolio.begin(); behv != portfolio.end(); behv++){
-		Logging::getInstance()->log("%s: onStart()", (*behv).first.c_str());
-		(*behv).second->onStart();
+		Logging::getInstance()->log("%s: onStart()", behv->first.c_str());
+		behv->second->onStart();
 	}
 }
 
@@ -145,8 +146,7 @@ void MetaStrategy::forceStrategy(string strategyName){
 }
 
 AIModule* MetaStrategy::randomUniform() {
-	return NULL;
-	/*Logging::getInstance()->log("Random uniform strategy selection...");
+	Logging::getInstance()->log("Random uniform strategy selection...");
 	boost::random::uniform_int_distribution<> unifInt(0, portfolio.size() - 1);
 	int index = unifInt(rng);
 
@@ -154,12 +154,10 @@ AIModule* MetaStrategy::randomUniform() {
 	map<string,AIModule*>::iterator iter = portfolio.begin();
 	std::advance(iter, index);
 
-	//just testing the randomness of the generator below :P
-	//Logging::getInstance()->log("Random sequence: %d %d %d %d %d", dist(gen), dist(gen), dist(gen), dist(gen), dist(gen));
 	Logging::getInstance()->log("Random index: %d", index);
-	Logging::getInstance()->log("Selected: %s", (*iter).first.c_str());
-	return (*iter).second;
-	*/
+	Logging::getInstance()->log("Selected: %s", iter->first.c_str());
+	return iter->second;
+	
 }
 
 
