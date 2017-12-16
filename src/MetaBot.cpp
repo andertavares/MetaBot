@@ -100,8 +100,9 @@ void MetaBot::onEnd(bool isWinner) {
     MatchData::getInstance()->registerMatchFinish(result);
     MatchData::getInstance()->writeSummary();
     MatchData::getInstance()->writeDetailedResult();
-    MatchData::getInstance()->updateCrashFile();	//TODO: valid only for epsilon-greedy!
 	*/
+    MatchData::getInstance()->updateCrashFile();	//TODO: valid only for epsilon-greedy!
+	
 	currentStrategy->onEnd(isWinner);
 	logger->log("Finished.");
 }

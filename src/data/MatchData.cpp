@@ -262,7 +262,7 @@ void MatchData::writeToCrashFile() {
     XMLElement* queryNode;
 
     string inputFile = Configuration::getInstance()->crashInformationInputFile();
-    string outputFile = Configuration::getInstance()->crashInformationOutputFile();
+    string crashFile = Configuration::getInstance()->crashInformationOutputFile();
 
     tinyxml2::XMLDocument doc;
     XMLError input_result = doc.LoadFile(inputFile.c_str());
@@ -281,28 +281,39 @@ void MatchData::writeToCrashFile() {
         );
         return;
     }
-    else { //no error, goes after root node
+    else { //file parsed, goes after root node
         rootNode = doc.FirstChildElement("crashes");
-        if (rootNode == NULL) {
+        if (rootNode == NULL) { //if no root node is present, create one
             rootNode = doc.NewElement("crashes");
             doc.InsertFirstChild(rootNode);
         }
     }
 
+
     float oldScore;
 
+	// initializes score as 1, or increments it if a score is already there
     myBehvNode = rootNode->FirstChildElement(myBehaviorName.c_str());
-    if (myBehvNode == NULL) {
+    if (myBehvNode == NULL) { // initializes score as 1
         myBehvNode = doc.NewElement(myBehaviorName.c_str());
-        myBehvNode->SetText(0);
+        myBehvNode->SetText(1);
         rootNode->InsertFirstChild(myBehvNode);
+		logger->log(
+			"Initialized crashes of '%s' as 1.",
+			myBehaviorName.c_str()
+		);
     }
-    else {
+    else { // increments previous score
         myBehvNode->QueryFloatText(&oldScore);
         myBehvNode->SetText(oldScore + 1);
+		logger->log(
+			"Incremented crashes of '%s' by 1.",
+			myBehaviorName.c_str()
+		);
     }
 
-    doc.SaveFile(outputFile.c_str());
+	// saves the file with new crash information
+	doc.SaveFile(crashFile.c_str());
 }
 
 void MatchData::updateCrashFile() {
@@ -318,7 +329,7 @@ void MatchData::updateCrashFile() {
     tinyxml2::XMLDocument doc;
     XMLError input_result = doc.LoadFile(outputFile.c_str());
 
-    // if another error occurr, we're in trouble =/
+    // if an error occurr, we're in trouble =/
     if (input_result != XML_NO_ERROR) {
 		logger->log(
             "Error while parsing the crash file '%s'. Error: '%s'",
@@ -333,7 +344,17 @@ void MatchData::updateCrashFile() {
             myBehvNode = rootNode->FirstChildElement(myBehaviorName.c_str());
             if (myBehvNode != NULL) {
                 myBehvNode->SetText(0);
+				logger->log(
+					"Updated crashes of '%s' to 0.",
+					myBehaviorName.c_str()
+				);
             }
+			else {
+				logger->log(
+					"Unable to update crashes of '%s'.",
+					myBehaviorName.c_str()
+				);
+			}
             doc.SaveFile(outputFile.c_str());
         }
     }
