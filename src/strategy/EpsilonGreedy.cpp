@@ -32,44 +32,46 @@ void EpsilonGreedy::onStart() {
         Configuration::getInstance()->epsilon
     );
 
-    //float lucky = (rand() % 1000) / 1000.f;
-    double lucky =  dist(gen); //(rand() / (double)(RAND_MAX + 1));
+    double lucky =  dist(gen); 
     double epsilon = Configuration::getInstance()->epsilon; //alias for easy reading
-    if (lucky < epsilon) {
+    if (lucky < epsilon) { // epsilon
 		Logging::getInstance()->log(
             "Choosing randomly: (%.3f < %.3f)", lucky, epsilon
         );
 		name += " - random choice";
 		currentStrategy = randomUniform();
     }
-    else {
+    else { // greedy
         Logging::getInstance()->log(
             "Choosing greedily: (%.3f > %.3f)", lucky, epsilon
         );
 		name += " - greedy choice";
 
-        //file to read is MetaBot-vs-enemy.xml
+        //file to read is scores_MetaBot-vs-enemy.xml
         string inputFile = Configuration::getInstance()->enemyInformationInputFile();
 
         tinyxml2::XMLDocument doc;
-        XMLError errorInput = doc.LoadFile(inputFile.c_str());
+        XMLError inputParseCode = doc.LoadFile(inputFile.c_str());
 
-        if (errorInput == XMLError::XML_NO_ERROR) {
+        if (inputParseCode == XMLError::XML_NO_ERROR) { //file parsed successfully
             //BWAPI::Player* enemy = Broodwar->enemy();
             string enemy_name = Broodwar->enemy()->getName();
             XMLElement* rootNode = doc.FirstChildElement("scores");
 
-            if (rootNode != NULL) {
-                XMLElement* candidate = rootNode->FirstChildElement();
+            if (rootNode != NULL) { //scores are there
+                
                 string best_name;
                 float best_score = -1.0f;
 
-				//TODO traverse the strategy names!
-                map<string, float> scoresMap;
-				scoresMap[MetaStrategy::NUSBot] = 0;
-                scoresMap[MetaStrategy::SKYNET] = 0;
-                scoresMap[MetaStrategy::XELNAGA] = 0;
+				// initializes map of names to scores with ones
+				// score found in XML file override the initial value
+				map<string, float> scoresMap;
+				initializeMap<float>(scoresMap, 1);
 
+                //scoresMap[MetaStrategy::SKYNET] = 0;
+                //scoresMap[MetaStrategy::XELNAGA] = 0;
+				// looks up all scores in XML and sets it in scoresMap
+				XMLElement* candidate = rootNode->FirstChildElement();
                 while (candidate != NULL) {
                     float score = -FLT_MAX;
                     candidate->QueryFloatText(&score);
@@ -78,6 +80,7 @@ void EpsilonGreedy::onStart() {
                     candidate = candidate->NextSiblingElement();
                 }
 
+				// finds the strategy with the best score
                 for (std::map<string, float>::iterator it = scoresMap.begin(); it != scoresMap.end(); ++it) {
                     if (it->second > best_score) {
                         best_name = it->first;
@@ -85,22 +88,25 @@ void EpsilonGreedy::onStart() {
                     }
                 }
 
-                if (best_name.empty()) {
-                    Logging::getInstance()->log("Best strategy could not be determined. Choosing randomly");
+                if (!best_name.empty()) {
+					Logging::getInstance()->log(
+						"Choosing '%s' greedily. Score: %f.", best_name.c_str(), best_score
+					);
+					currentStrategy = portfolio[best_name];
+                }
+                else { // if unable to determine best strategy for some reason, choose randomly
+					Logging::getInstance()->log("Best strategy could not be determined. Choosing randomly");
 					name += " failed. Best score not found";
 					currentStrategy = randomUniform();
                 }
-                else {
-                    currentStrategy = portfolio[best_name];
-                }
-            }
-            else {
+            } 
+            else { // if xml file has no <scores> tag, choose randomly
                 Logging::getInstance()->log("Enemy information not found, choosing strategy randomly");
 				name += " failed. Enemy info not found";
                 currentStrategy = randomUniform();
             }
         }
-        else { //prints error
+        else { // if xml parsing has failed, prints error
             Logging::getInstance()->log(
                 "Error while parsing scores file '%s': '%s'. Choosing randomly.",
                 inputFile.c_str(),
@@ -146,76 +152,85 @@ void EpsilonGreedy::onFrame() {
 void EpsilonGreedy::discountCrashes() {
     using namespace tinyxml2;
 
-    //file to read is MetaBot-vs-enemy.xml
+    //file to read is scores_MetaBot-vs-enemy.xml
     string inputFile = Configuration::getInstance()->enemyInformationInputFile();
     string outputFile = Configuration::getInstance()->enemyInformationOutputFile();
     string crashFile = Configuration::getInstance()->crashInformationInputFile();
 
-    tinyxml2::XMLDocument doc;
-    XMLError errorInputCrash = doc.LoadFile(crashFile.c_str());
+	tinyxml2::XMLDocument crashesDoc;
+    XMLError crashParseCode = crashesDoc.LoadFile(crashFile.c_str());
 
-    tinyxml2::XMLDocument doc2;
-    XMLError errorInput = doc2.LoadFile(inputFile.c_str());
+    tinyxml2::XMLDocument scoresDoc;
+    XMLError inputParseCode = scoresDoc.LoadFile(inputFile.c_str());
 
-    if (errorInputCrash == XMLError::XML_NO_ERROR) {
-        XMLElement* rootNode = doc.FirstChildElement("crashes");
+    if (crashParseCode == XMLError::XML_NO_ERROR) {
+        XMLElement* rootNode = crashesDoc.FirstChildElement("crashes");
         if (rootNode != NULL) {
             XMLElement* behavior = rootNode->FirstChildElement();
 
-            map<string, float> crashesMap;
-            crashesMap[MetaStrategy::NUSBot] = 0;
-            crashesMap[MetaStrategy::SKYNET] = 0;
-            crashesMap[MetaStrategy::XELNAGA] = 0;
+			// initializes crashesMap with zeros
+			// they will be overridden if found in files
+            map<string, int> crashesMap;
+			initializeMap<int>(crashesMap, 0);
+            //crashesMap[MetaStrategy::XELNAGA] = 0;
 
+			// traverses all behaviors in xml file, filling the crash map
             while (behavior != NULL) {
-                float score = -FLT_MAX;
-                behavior->QueryFloatText(&score);
-                crashesMap[behavior->Name()] = score;
+                int crashes;
+				behavior->QueryIntText(&crashes);
+				crashesMap[behavior->Name()] = crashes;
                 behavior = behavior->NextSiblingElement();
             }
 
-            if (errorInput == XMLError::XML_NO_ERROR) {
-                XMLElement* inputRootNode = doc2.FirstChildElement("scores");
+            if (inputParseCode == XMLError::XML_NO_ERROR) { //scores file successfully opened
+                XMLElement* inputRootNode = scoresDoc.FirstChildElement("scores");
 
                 if (inputRootNode != NULL) {
                     XMLElement* input_behavior = inputRootNode->FirstChildElement();
 
+					// initializes scores with ones
                     map<string, float> scoresMap;
-                    scoresMap[MetaStrategy::NUSBot] = 0;
-                    scoresMap[MetaStrategy::SKYNET] = 0;
-                    scoresMap[MetaStrategy::XELNAGA] = 0;
+					initializeMap<float>(scoresMap, 1);
+                    //scoresMap[MetaStrategy::NUSBot] = 0;
 
+					// for each behavior in scores file, discounts the crashes by simulating Q-learning updates
                     while (input_behavior != NULL) {
-                        float score = -FLT_MAX;
+                        // finds the score stored in the scores file
+						float score;
+						input_behavior->QueryFloatText(&score);
+
+						// simulates Q-learning updates with reward of loss to punish the crashes
                         float alpha = Configuration::getInstance()->alpha;
+                        //if (score > 0 && input_behavior == behavior) {
+						//one Q-learning update per crash
+						for (int i = crashesMap[input_behavior->Name()]; i > 0; i--) {
+							score = (1 - alpha)*score + alpha * (-1); //crash is a loss, thus -1 is the reward
+						}
 
-                        input_behavior->QueryFloatText(&score);
-                        if (score > 0 && input_behavior == behavior) {
-                            for (int i = crashesMap[input_behavior->Name()]; i > 0; i--)
-                                score = (1 - alpha)*score + alpha * (-1);
-
-                        }
+                        //}
+						// puts the score back in the xml element
                         scoresMap[input_behavior->Name()] = score;
                         input_behavior->SetText(score);
                         input_behavior = input_behavior->NextSiblingElement();
                     }
                 }
-                doc2.SaveFile(outputFile.c_str());
+				// saves the updated scores back to the scores file
+                scoresDoc.SaveFile(outputFile.c_str());
             }
-            else { //prints error
+            else { // if unable to parse score file, prints error
 				Logging::getInstance()->log(
-                    "Error while parsing input file '%s'. Error: '%s'",
+                    "Error while parsing score file '%s'. Error: '%s'",
                     Configuration::getInstance()->enemyInformationInputFile().c_str(),
-                    doc2.ErrorName()
+                    scoresDoc.ErrorName()
                 );
             }
-        }
+        } // (rootNode != NULL)
     }
-    else { //prints error
+    else { // if unable to parse crash file, prints error
         Logging::getInstance()->log(
             "Error while parsing crash file '%s'. Error: '%s'",
             Configuration::getInstance()->crashInformationInputFile().c_str(),
-            doc.ErrorName()
+            crashesDoc.ErrorName()
         );
     }
 }
