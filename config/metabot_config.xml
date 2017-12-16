@@ -1,6 +1,6 @@
 <!-- put this file under <starcraft>/bwapi-data/AI -->
 <config>
-  <!-- possible values: probabilistic, epsilon-greedy, random-switch, Xelnaga, Skynet, NUSBot -->
+  <!-- possible values: probabilistic, epsilon-greedy, random-switch, or the name of the fixed AI to use -->
   <meta-strategy value="epsilon-greedy" />
 
   <portfolio>
