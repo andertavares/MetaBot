@@ -34,13 +34,15 @@ void MatchData::registerMatchFinish(int result) {
     gameResult = result;
 
     //attempts to retrieve enemy score information (not working, currently BWAPI doesn't allow retrieval of enemy info even at match end)
-    Broodwar->enableFlag(Flag::CompleteMapInformation);
+    //Broodwar->enableFlag(Flag::CompleteMapInformation);
 
-    //registers scores of both players
+    /*registers scores of both players
     Player* me = Broodwar->self();
     Player* enemy = Broodwar->enemy();
-
-	logger->log("Match finished at %s", currentDateTime().c_str());
+	*/
+	logger->log(
+		"Match finished at %s with result %d", currentDateTime().c_str(), result
+	);
 }
 
 void MatchData::registerMetaStrategy(string name) {
