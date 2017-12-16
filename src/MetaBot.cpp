@@ -49,14 +49,11 @@ void MetaBot::onStart() {
 	//retrieves strategy to begin match
 	currentStrategy = metaStrategy->getCurrentStrategy();
 	
-   
 	logger->log("Game started with '%s'!", metaStrategy->getCurrentStrategyName().c_str());
 
     MatchData::getInstance()->registerMyBehaviorName(metaStrategy->getCurrentStrategyName());
-	
-    //currentBehavior->onStart();
-
-    MatchData::getInstance()->writeToCrashFile();
+    // initializes crash counter
+	MatchData::getInstance()->writeToCrashFile();
 	
 	//initializes game state manager
 	GameStateManager::getInstance();
@@ -95,14 +92,9 @@ void MetaBot::onEnd(bool isWinner) {
 		logger->log("Defeat :( Finishing behavior: %s.", strategyName.c_str());
 	}
 	
-    
-	
     MatchData::getInstance()->registerMatchFinish(result);
-	
 	MatchData::getInstance()->writeSummary();
-	/*
-    MatchData::getInstance()->writeDetailedResult();
-	*/
+    MatchData::getInstance()->updateScoresFile();
     MatchData::getInstance()->updateCrashFile();	//TODO: valid only for epsilon-greedy!
 	
 	currentStrategy->onEnd(isWinner);
@@ -116,7 +108,7 @@ void MetaBot::onFrame() {
 	}
 	//just prints 'Alive...' so that we know things are ok
 	if (Broodwar->getFrameCount() % 100 == 0) {
-		Logging::getInstance()->log("Alive...");
+		Logging::getInstance()->log("Alive.");
     }
 
 	if (Broodwar->elapsedTime() / 60 >= 81) {	//leave stalled game

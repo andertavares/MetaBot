@@ -68,15 +68,10 @@ bool isSpace(char caracter) {
         return false;
 }
 
-void MatchData::writeDetailedResult() {
+void MatchData::updateScoresFile() {
     using namespace tinyxml2;
 
     string bot_name = myBehaviorName;
-
-    /* DEBUG
-    ofstream outFile;
-    outFile.open("bwapi-data/write/dbg.txt", ios::out | ios::app);
-    */
 
     XMLElement* rootNode;
     XMLElement* myBehvNode;
@@ -98,11 +93,6 @@ void MatchData::writeDetailedResult() {
     // if another error occurred, we're in trouble =/
     else if (input_result != XML_NO_ERROR) {
 		
-        /*Broodwar->printf(
-            "Error while parsing the configuration file '%s'. Error: '%s'",
-            inputFile,
-            doc.ErrorName()
-        );*/
 		logger->log(
             "Error while parsing the configuration file '%s'. Error: '%s'",
             inputFile,
@@ -119,47 +109,45 @@ void MatchData::writeDetailedResult() {
         }
     }
 
-    //finds information with bot node
-    /*botNode = doc.FirstChildElement("results")->FirstChildElement(enemy_name.c_str());
-    if (botNode == NULL) {
-    botNode = doc.NewElement(enemy_name.c_str());
-    doc.InsertFirstChild(botNode);
-    }*/
-
-    int result_value = 0;
-    //queries wins, losses or draws node according to match result
-    if (gameResult == LOSS) {
-        result_value = -1;
-    }
-    else if (gameResult == DRAW) {
-        result_value = 0;
-    }
-    else if (gameResult == WIN) {
-        result_value = 1;
-    }
+	// determines the reward according to the match result
+	int reward = 0;
+    if (gameResult == LOSS) reward = -1;
+    else if (gameResult == DRAW)  reward = 0;
+    else if (gameResult == WIN)  reward = 1;
     else {
 		logger->log("Invalid game result! %s", gameResult);
         throw exception("Invalid game result!");
     }
 
-    float oldScore;
+	// variables for the Q-learning update rule
+    float oldScore = 1;
     float score = 0;
     float alpha = Configuration::getInstance()->alpha; //alias for easy reading
 
-
+	// looks for the node with score of the active behavior
     myBehvNode = rootNode->FirstChildElement(myBehaviorName.c_str());
-    if (myBehvNode == NULL) {
-        score = alpha*result_value;
-        myBehvNode = doc.NewElement(myBehaviorName.c_str());
-        myBehvNode->SetText(score);
-        rootNode->InsertFirstChild(myBehvNode);
+    if (myBehvNode != NULL) {   //node found, updates the value
+		myBehvNode->QueryFloatText(&oldScore); // reads oldScore from the file
+		score = oldScore + alpha*(reward - oldScore);// (1 - alpha) * oldScore + alpha*reward;
+		myBehvNode->SetText(score);
+		logger->log(
+			"Updated score of '%s'. Old=%f; new=%f", 
+			myBehaviorName.c_str(), oldScore, score
+		);
+		
     }
-    else {
-        myBehvNode->QueryFloatText(&oldScore);
-        score = (1 - alpha)*oldScore + alpha*result_value;
-        myBehvNode->SetText(score);
-    }
+    else { // node not found, initializes with first result
+		score = oldScore + alpha*(reward - oldScore);  //score = (1 - alpha) * oldScore + alpha * reward;
+		myBehvNode = doc.NewElement(myBehaviorName.c_str());
+		myBehvNode->SetText(score);
+		rootNode->InsertFirstChild(myBehvNode);
 
+		logger->log(
+			"Set score of '%s' to new=%f",
+			myBehaviorName.c_str(), score
+		);
+    }
+	// saves the updated score element
     doc.SaveFile(outputFile.c_str());
 }
 

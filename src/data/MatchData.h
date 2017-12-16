@@ -73,7 +73,7 @@ public:
 	void registerEnemyBehaviorName(string name);
 
 	/* Writes match result in a file */
-	void writeDetailedResult();
+	void updateScoresFile();
 
     /* Writes info of a crash event in a file */
     void writeToCrashFile();
