@@ -39,6 +39,17 @@ protected:
 	/** Returns a strategy uniformly at random */
 	BWAPI::AIModule* randomUniform(); 
 
+	/** Initializes all values in a string->float map */
+	template<typename T>
+	void initializeMap(std::map<string, T>& map, T initialValue) { //implementation in header prevents linking errors
+		vector<string> &portfolioNames = Configuration::getInstance()->portfolioNames;
+		vector<string>::iterator it;
+
+		for (it = portfolioNames.begin(); it != portfolioNames.end(); it++) {
+			map[*it] = initialValue;
+		}
+	}
+
 
 public:
 

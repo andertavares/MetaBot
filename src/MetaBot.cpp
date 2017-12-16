@@ -50,7 +50,7 @@ void MetaBot::onStart() {
 	currentStrategy = metaStrategy->getCurrentStrategy();
 	
    
-	logger->log("Game started with %s !", metaStrategy->getCurrentStrategyName().c_str());
+	logger->log("Game started with '%s'!", metaStrategy->getCurrentStrategyName().c_str());
 
     MatchData::getInstance()->registerMyBehaviorName(metaStrategy->getCurrentStrategyName());
 	
@@ -74,7 +74,7 @@ void MetaBot::onStart() {
 }
 
 void MetaBot::onEnd(bool isWinner) {
-	/*string strategyName = metaStrategy->getCurrentStrategyName();
+	string strategyName = metaStrategy->getCurrentStrategyName();
 
     logger->log("Game ended well with %s.", strategyName.c_str());
     
@@ -94,7 +94,7 @@ void MetaBot::onEnd(bool isWinner) {
 		result = MatchData::LOSS;
 		logger->log("Defeat :( Finishing behavior: %s.", strategyName.c_str());
 	}
-	*/
+	
     
 	/*
     MatchData::getInstance()->registerMatchFinish(result);
