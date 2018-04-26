@@ -7,6 +7,12 @@
     <strategy value="Skynet" />
     <strategy value="Xelnaga" />
     <strategy value="NUSBot" />
+   
+    <strategy value="BaseBehavior" />
+    <strategy value="Explore" />
+    <strategy value="Expand" />
+    <strategy value="PackAndAttack" />
+    
     <!-- <strategy value="Ximp" /> uncomment to activate Ximp -->
   </portfolio>
   
