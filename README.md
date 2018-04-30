@@ -18,7 +18,7 @@ If you're a developer and would like to build MetaBot yourself, please refer to 
 - Anderson "Zealot" Tavares
 - Tiago "Goliath" Oliveira
 - Luiz "Commander" Chaimowicz
-- Guilherme "Zergling" Oliveira
+- Guilherme "Broodling" Oliveira
 
 ### Former
 - Amanda "Valkyrie" Santos
