@@ -22,6 +22,13 @@ const string MetaStrategy::SKYNET = "Skynet";
 const string MetaStrategy::XELNAGA = "Xelnaga";
 const string MetaStrategy::NUSBot = "NUSBot";
 
+const string MetaStrategy::BASEBEHAVIOR = "BaseBehavior";
+const string MetaStrategy::EXPAND = "Expand";
+const string MetaStrategy::EXPLORE = "Explore";
+const string MetaStrategy::PACKANDATTACK = "PackAndAttack";
+
+const string MetaStrategy::MANUAL = "Manual";
+
 MetaStrategy::MetaStrategy() : rng(std::time(0)) {
 	name = "none";
 

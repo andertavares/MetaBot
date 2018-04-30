@@ -1,7 +1,7 @@
 <!-- put this file under <starcraft>/bwapi-data/AI -->
 <config>
-  <!-- possible values: probabilistic, epsilon-greedy, random-switch, or the name of the fixed AI to use -->
-  <meta-strategy value="epsilon-greedy" />
+  <!-- possible values: manual, probabilistic, epsilon-greedy, random-switch, or the name of the fixed AI to use -->
+  <meta-strategy value="manual" />
 
   <portfolio>
     <strategy value="Skynet" />
@@ -12,6 +12,8 @@
     <strategy value="Explore" />
     <strategy value="Expand" />
     <strategy value="PackAndAttack" />
+
+    <strategy value="Manual" />
     
     <!-- <strategy value="Ximp" /> uncomment to activate Ximp -->
   </portfolio>

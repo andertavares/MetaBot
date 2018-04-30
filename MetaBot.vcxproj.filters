@@ -67,6 +67,9 @@
     <ClCompile Include="src\MetaBot.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="src\strategy\Manual.cpp">
+      <Filter>strategy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="main">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="src\MetaBot.h">
       <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\strategy\Manual.h">
+      <Filter>strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

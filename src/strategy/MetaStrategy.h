@@ -66,6 +66,13 @@ public:
 	static const string XELNAGA;	//"Xelnaga"
 	static const string NUSBot;		//"NUSBot"
 
+	static const string BASEBEHAVIOR;	//"BaseBehavior"
+	static const string EXPLORE;		//"Explore"
+	static const string EXPAND;			//"Expand"
+	static const string PACKANDATTACK;	//"PackAndAttack"
+
+	static const string MANUAL;		//"Manual"
+
 	/** Returns the meta strategy name */
 	string getName();
 

@@ -107,6 +107,7 @@
     <ClCompile Include="src\managers\ExplorationManager.cpp" />
     <ClCompile Include="src\MetaBot.cpp" />
     <ClCompile Include="src\strategy\EpsilonGreedy.cpp" />
+    <ClCompile Include="src\strategy\Manual.cpp" />
     <ClCompile Include="src\strategy\MetaStrategy.cpp" />
     <ClCompile Include="src\strategy\MetaStrategyManager.cpp" />
     <ClCompile Include="src\strategy\Probabilistic.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\managers\ExplorationManager.h" />
     <ClInclude Include="src\MetaBot.h" />
     <ClInclude Include="src\strategy\EpsilonGreedy.h" />
+    <ClInclude Include="src\strategy\Manual.h" />
     <ClInclude Include="src\strategy\MetaStrategy.h" />
     <ClInclude Include="src\strategy\MetaStrategyManager.h" />
     <ClInclude Include="src\strategy\Probabilistic.h" />
