@@ -27,7 +27,7 @@ const string MetaStrategy::EXPAND = "Expand";
 const string MetaStrategy::EXPLORE = "Explore";
 const string MetaStrategy::PACKANDATTACK = "PackAndAttack";
 
-const string MetaStrategy::MANUAL = "Manual";
+const string MetaStrategy::MANUALCOMMANDS = "ManualCommands";
 
 MetaStrategy::MetaStrategy() : rng(std::time(0)) {
 	name = "none";
@@ -152,6 +152,10 @@ void MetaStrategy::forceStrategy(string strategyName){
 
 }
 
+vector<string> MetaStrategy::getPortfolioName(){
+	return Configuration::getInstance()->portfolioNames;
+}
+
 AIModule* MetaStrategy::randomUniform() {
 	Logging::getInstance()->log("Random uniform strategy selection...");
 	boost::random::uniform_int_distribution<> unifInt(0, portfolio.size() - 1);
@@ -167,6 +171,8 @@ AIModule* MetaStrategy::randomUniform() {
 	
 }
 
+void MetaStrategy::onSendText(std::string text){
+};
 
 /*
 void MetaStrategy::printInfo() {

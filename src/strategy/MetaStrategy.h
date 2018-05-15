@@ -71,7 +71,7 @@ public:
 	static const string EXPAND;			//"Expand"
 	static const string PACKANDATTACK;	//"PackAndAttack"
 
-	static const string MANUAL;		//"Manual"
+	static const string MANUALCOMMANDS;		//"ManualCommands"
 
 	/** Returns the meta strategy name */
 	string getName();
@@ -81,6 +81,9 @@ public:
 
 	/** Returns active behavior name */
 	string getCurrentStrategyName();
+
+	/** Returns portfolio list*/
+	vector<string> getPortfolioName();
 
 	/** Acts every frame (may switch strategy or not) */
 	virtual void onFrame() {}
@@ -93,6 +96,9 @@ public:
 
     /** Prints debug info to the screen. */
     void printInfo();
+
+	
+	virtual void onSendText(std::string text);
 
 };
 

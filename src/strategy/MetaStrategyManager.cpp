@@ -6,7 +6,7 @@
 #include "Probabilistic.h"
 #include "RandomSwitch.h"
 #include "SingleChoice.h"
-#include "Manual.h"
+#include "ManualSelection.h"
 
 MetaStrategy* MetaStrategyManager::activeMetaStrategy = NULL;
 
@@ -28,8 +28,8 @@ MetaStrategy* MetaStrategyManager::getMetaStrategy(){
 		else if (metaStrategyName == "random-switch") {
 			activeMetaStrategy = new RandomSwitch();
 		}
-		else if (metaStrategyName == "manual") {
-			activeMetaStrategy = new Manual();
+		else if (metaStrategyName == "manual-selection") {
+			activeMetaStrategy = new ManualSelection();
 		}
 	
 		else {	//otherwise, go to Single Choice using 'metaStrategyName' as the chosen behavior
