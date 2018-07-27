@@ -67,7 +67,7 @@
     <ClCompile Include="src\MetaBot.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="src\strategy\Manual.cpp">
+    <ClCompile Include="src\strategy\ManualSelection.cpp">
       <Filter>strategy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,6 +98,15 @@
     </Filter>
     <Filter Include="config">
       <UniqueIdentifier>{57d54a49-243d-4e99-a2a2-710821f0e25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\UnitInfoLib">
+      <UniqueIdentifier>{852b028f-e0ae-4db8-bc4a-e5e908793f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\UnitInfoLib\lib">
+      <UniqueIdentifier>{f5562a00-9def-4d5b-8f30-48f9bad13bd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\UnitInfoLib\include">
+      <UniqueIdentifier>{4c2d381b-2ffe-4d36-9499-852193d6b7a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -158,8 +167,14 @@
     <ClInclude Include="src\MetaBot.h">
       <Filter>main</Filter>
     </ClInclude>
-    <ClInclude Include="src\strategy\Manual.h">
+    <ClInclude Include="src\strategy\ManualSelection.h">
       <Filter>strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\UnitInfoLib\include\UnitData.h">
+      <Filter>utils\UnitInfoLib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\UnitInfoLib\include\UnitInfoManager.h">
+      <Filter>utils\UnitInfoLib\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,5 +190,19 @@
     <None Include="config\metabot_config.xml">
       <Filter>config</Filter>
     </None>
+    <None Include="src\utils\StarCraftUnitInfo-master\UnitInfo\UnitInfo.vcxproj.filters">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\UnitInfoLib\lib\UnitInfod.pdb">
+      <Filter>utils\UnitInfoLib\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="src\utils\UnitInfoLib\lib\UnitInfo.lib">
+      <Filter>utils\UnitInfoLib\lib</Filter>
+    </Library>
+    <Library Include="src\utils\UnitInfoLib\lib\UnitInfod.lib">
+      <Filter>utils\UnitInfoLib\lib</Filter>
+    </Library>
   </ItemGroup>
 </Project>

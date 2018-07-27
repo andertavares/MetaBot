@@ -15,7 +15,11 @@
 #include <cstdlib>
 #include <ctime>
 
+//StarcraftUnitInfo Support
+#include "UnitInfoManager.h"
+
 using namespace BWAPI;
+using namespace scutil;
 
 MetaBot::MetaBot() : acknowledged(false) {
     
@@ -30,6 +34,9 @@ MetaBot::MetaBot() : acknowledged(false) {
 }
 
 void MetaBot::onStart() {
+	//initializes the UnitInfoManager
+	UnitInfoManager::getInstance();
+
     // Uncomment to enable complete map information
     //Broodwar->enableFlag(Flag::CompleteMapInformation);
 
@@ -63,7 +70,7 @@ void MetaBot::onStart() {
 
     int speed = Configuration::getInstance()->speed;
 	logger->log("Setting speed to %d.", speed);
-    Broodwar->setLocalSpeed(0);
+    Broodwar->setLocalSpeed(speed);
 
     bool gui = Configuration::getInstance()->enableGUI;
 	logger->log("Setting GUI to %s.", gui ? "enabled" : "disabled");
@@ -102,6 +109,8 @@ void MetaBot::onEnd(bool isWinner) {
 }
 
 void MetaBot::onFrame() {
+	// activates the onFrame of UnitInfoManager
+	UnitInfoManager::getInstance().onFrame();
 
 	if(Broodwar->getFrameCount() == 0){
 		logger->log("BEGIN: first onFrame.");
@@ -161,24 +170,29 @@ void MetaBot::onNukeDetect(BWAPI::Position target) {
 
 void MetaBot::onUnitDiscover(BWAPI::Unit* unit) {
 	GameState::onUnitDiscover(unit);
+	UnitInfoManager::getInstance().onUnitDiscover(unit);
     currentStrategy->onUnitDiscover(unit);
 }
 
 void MetaBot::onUnitEvade(BWAPI::Unit* unit) {
+	UnitInfoManager::getInstance().onUnitEvade(unit);
     currentStrategy->onUnitEvade(unit);
 }
 
 void MetaBot::onUnitShow(BWAPI::Unit* unit) {
 	GameState::onUnitShow(unit);
+	UnitInfoManager::getInstance().onUnitShow(unit);
     currentStrategy->onUnitShow(unit);
 }
 
 void MetaBot::onUnitHide(BWAPI::Unit* unit) {
+	UnitInfoManager::getInstance().onUnitHide(unit);
     currentStrategy->onUnitHide(unit);
 }
 
 void MetaBot::onUnitCreate(BWAPI::Unit* unit) {
 	GameState::onUnitCreate(unit);
+	UnitInfoManager::getInstance().onUnitCreate(unit);
     currentStrategy->onUnitCreate(unit);
 }
 
@@ -194,15 +208,17 @@ void MetaBot::onUnitDestroy(BWAPI::Unit* unit) {
 	if (unit->getPlayer()->getID() == Broodwar->enemy()->getID())	{
 		GameState::onUnitDestroy(unit);
 	}
-
+	UnitInfoManager::getInstance().onUnitDestroy(unit);
     currentStrategy->onUnitDestroy(unit);
 }
 
 void MetaBot::onUnitMorph(BWAPI::Unit* unit) {
-    currentStrategy->onUnitMorph(unit);
+    UnitInfoManager::getInstance().onUnitMorph(unit);
+	currentStrategy->onUnitMorph(unit);
 }
 
 void MetaBot::onUnitRenegade(BWAPI::Unit* unit) {
+	UnitInfoManager::getInstance().onUnitRenegade(unit);
     currentStrategy->onUnitRenegade(unit);
 }
 
@@ -211,7 +227,8 @@ void MetaBot::onSaveGame(std::string gameName) {
 }
 
 void MetaBot::onUnitComplete(BWAPI::Unit *unit) {
-    currentStrategy->onUnitComplete(unit);
+    UnitInfoManager::getInstance().onUnitComplete(unit);
+	currentStrategy->onUnitComplete(unit);
 }
 
 /*
@@ -249,3 +266,4 @@ void MetaBot::handshake(string text){
         acknowledged = true;
     }
 }
+
