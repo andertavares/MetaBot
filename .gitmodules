@@ -1,0 +1,3 @@
+[submodule "src/StarcraftUnitInfo"]
+	path = src/StarcraftUnitInfo
+	url = https://github.com/andertavares/StarCraftUnitInfo
