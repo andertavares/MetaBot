@@ -76,7 +76,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>src/utils/UnitInfoLib/include;../include;..\XelNaga\AiurModule\Source;..\XelNaga\include;..\Skynet\Skynet;..\NUSBot\NUSBot\src\SparCraft\source;..\NUSBot\NUSBot\src\NUSBot\Source;$(BWAPI_DIR)/include;$(BOOST_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src/StarcraftUnitInfo/UnitInfo/Source/;../include;..\XelNaga\AiurModule\Source;..\XelNaga\include;..\Skynet\Skynet;..\NUSBot\NUSBot\src\SparCraft\source;..\NUSBot\NUSBot\src\NUSBot\Source;$(BWAPI_DIR)/include;$(BOOST_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;SKYNET_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -86,7 +86,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>src/utils/UnitInfoLib/lib/UnitInfo.lib;$(BWAPI_DIR)/lib/BWAPI.lib;$(BWAPI_DIR)/lib/BWTA.lib;$(BWAPI_DIR)/lib/tinyxml.lib;$(BWAPI_DIR)/lib/CGAL-vc90-mt.lib;$(BWAPI_DIR)/lib/libboost_thread-vc90-mt-1_40.lib;$(BWAPI_DIR)/lib/gmp-vc90-mt.lib;$(BWAPI_DIR)/lib/mpfr-vc90-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(BWAPI_DIR)/lib/BWAPI.lib;$(BWAPI_DIR)/lib/BWTA.lib;$(BWAPI_DIR)/lib/tinyxml.lib;$(BWAPI_DIR)/lib/CGAL-vc90-mt.lib;$(BWAPI_DIR)/lib/libboost_thread-vc90-mt-1_40.lib;$(BWAPI_DIR)/lib/gmp-vc90-mt.lib;$(BWAPI_DIR)/lib/mpfr-vc90-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -101,11 +101,11 @@
     <ClCompile Include="src\data\MatchData.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\evaluators\MilitaryEvaluator.cpp" />
-    <ClCompile Include="src\gamedata\GameState.cpp" />
-    <ClCompile Include="src\gamedata\GameStateManager.cpp" />
     <ClCompile Include="src\gamedata\SpottedObject.cpp" />
     <ClCompile Include="src\managers\ExplorationManager.cpp" />
     <ClCompile Include="src\MetaBot.cpp" />
+    <ClCompile Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitData.cpp" />
+    <ClCompile Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitInfoManager.cpp" />
     <ClCompile Include="src\strategy\EpsilonGreedy.cpp" />
     <ClCompile Include="src\strategy\ManualSelection.cpp" />
     <ClCompile Include="src\strategy\MetaStrategy.cpp" />
@@ -125,11 +125,11 @@
     <ClInclude Include="src\data\GameStateInfo.h" />
     <ClInclude Include="src\data\MatchData.h" />
     <ClInclude Include="src\evaluators\MilitaryEvaluator.h" />
-    <ClInclude Include="src\gamedata\GameState.h" />
-    <ClInclude Include="src\gamedata\GameStateManager.h" />
     <ClInclude Include="src\gamedata\SpottedObject.h" />
     <ClInclude Include="src\managers\ExplorationManager.h" />
     <ClInclude Include="src\MetaBot.h" />
+    <ClInclude Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitData.h" />
+    <ClInclude Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitInfoManager.h" />
     <ClInclude Include="src\strategy\EpsilonGreedy.h" />
     <ClInclude Include="src\strategy\ManualSelection.h" />
     <ClInclude Include="src\strategy\MetaStrategy.h" />
@@ -141,8 +141,6 @@
     <ClInclude Include="src\utils\FileCounter.h" />
     <ClInclude Include="src\utils\Logging.h" />
     <ClInclude Include="src\utils\tinyxml2.h" />
-    <ClInclude Include="src\utils\UnitInfoLib\include\UnitData.h" />
-    <ClInclude Include="src\utils\UnitInfoLib\include\UnitInfoManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\metabot_config.xml" />
@@ -150,11 +148,6 @@
     <None Include="config\megabot_protoss-uniform.xml" />
     <None Include="config\README.txt" />
     <None Include="src\utils\StarCraftUnitInfo-master\UnitInfo\UnitInfo.vcxproj.filters" />
-    <None Include="src\utils\UnitInfoLib\lib\UnitInfod.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="src\utils\UnitInfoLib\lib\UnitInfo.lib" />
-    <Library Include="src\utils\UnitInfoLib\lib\UnitInfod.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
