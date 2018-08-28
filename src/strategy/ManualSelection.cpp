@@ -1,5 +1,5 @@
 #include "ManualSelection.h"
-#include "UnitInfoManager.h"
+#include "../StarcraftUnitInfo/UnitInfo/Source/UnitInfoManager.h"
 
 ManualSelection::ManualSelection(void) {
 	name = "ManualSelection";

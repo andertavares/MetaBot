@@ -72,7 +72,7 @@ BWAPI::AIModule* MetaStrategy::loadAIModule(string moduleName) {
 
 	// attempts to load the library and call newAIModule
 	// on error, loads dummy AI
-	hDLL = LoadLibrary(path.c_str());
+	hDLL = LoadLibraryA(path.c_str());
 	if (hDLL != NULL) {
 		logger->log("Successfully loaded %s's DLL.", moduleName.c_str());
 		// Obtain the AI module function

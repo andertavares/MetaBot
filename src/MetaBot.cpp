@@ -5,7 +5,7 @@
 #include <iterator>
 
 #include "MetaBot.h"
-#include "UnitInfoManager.h"
+#include "StarcraftUnitInfo/UnitInfo/Source/UnitInfoManager.h"
 #include "strategy/MetaStrategy.h"
 #include "strategy/MetaStrategyManager.h"
 #include "data/Configuration.h"
