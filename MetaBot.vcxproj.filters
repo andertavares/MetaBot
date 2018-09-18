@@ -46,13 +46,7 @@
     <ClCompile Include="src\strategy\MetaStrategy.cpp">
       <Filter>strategy</Filter>
     </ClCompile>
-    <ClCompile Include="src\gamedata\GameStateManager.cpp">
-      <Filter>gamedata</Filter>
-    </ClCompile>
     <ClCompile Include="src\gamedata\SpottedObject.cpp">
-      <Filter>gamedata</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gamedata\GameState.cpp">
       <Filter>gamedata</Filter>
     </ClCompile>
     <ClCompile Include="src\strategy\SingleChoice.cpp">
@@ -69,6 +63,12 @@
     </ClCompile>
     <ClCompile Include="src\strategy\ManualSelection.cpp">
       <Filter>strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitData.cpp">
+      <Filter>unitInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitInfoManager.cpp">
+      <Filter>unitInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,9 @@
     <Filter Include="utils\UnitInfoLib\include">
       <UniqueIdentifier>{4c2d381b-2ffe-4d36-9499-852193d6b7a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="unitInfo">
+      <UniqueIdentifier>{7382fead-c556-4d9b-80c1-cd38fe577e58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\data\Configuration.h">
@@ -146,12 +149,6 @@
     <ClInclude Include="src\strategy\MetaStrategy.h">
       <Filter>strategy</Filter>
     </ClInclude>
-    <ClInclude Include="src\gamedata\GameState.h">
-      <Filter>gamedata</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gamedata\GameStateManager.h">
-      <Filter>gamedata</Filter>
-    </ClInclude>
     <ClInclude Include="src\gamedata\SpottedObject.h">
       <Filter>gamedata</Filter>
     </ClInclude>
@@ -170,11 +167,11 @@
     <ClInclude Include="src\strategy\ManualSelection.h">
       <Filter>strategy</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\UnitInfoLib\include\UnitData.h">
-      <Filter>utils\UnitInfoLib\include</Filter>
+    <ClInclude Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitData.h">
+      <Filter>unitInfo</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\UnitInfoLib\include\UnitInfoManager.h">
-      <Filter>utils\UnitInfoLib\include</Filter>
+    <ClInclude Include="src\StarcraftUnitInfo\UnitInfo\Source\UnitInfoManager.h">
+      <Filter>unitInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,16 +190,5 @@
     <None Include="src\utils\StarCraftUnitInfo-master\UnitInfo\UnitInfo.vcxproj.filters">
       <Filter>utils</Filter>
     </None>
-    <None Include="src\utils\UnitInfoLib\lib\UnitInfod.pdb">
-      <Filter>utils\UnitInfoLib\lib</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="src\utils\UnitInfoLib\lib\UnitInfo.lib">
-      <Filter>utils\UnitInfoLib\lib</Filter>
-    </Library>
-    <Library Include="src\utils\UnitInfoLib\lib\UnitInfod.lib">
-      <Filter>utils\UnitInfoLib\lib</Filter>
-    </Library>
   </ItemGroup>
 </Project>
