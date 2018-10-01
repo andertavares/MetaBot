@@ -1,21 +1,24 @@
 <!-- put this file under <starcraft>/bwapi-data/AI -->
 <config>
   <!-- possible values: manual, probabilistic, epsilon-greedy, random-switch, or the name of the fixed AI to use -->
-  <meta-strategy value="manual-selection" />
+  <meta-strategy value="epsilon-greedy" />
 
   <portfolio>
     <strategy value="Skynet" />
     <strategy value="Xelnaga" />
-    <strategy value="NUSBot" />
-   
-    <strategy value="BaseBehavior" />
-    <strategy value="Explore" />
-    <strategy value="Expand" />
-    <strategy value="PackAndAttack" />
+    <strategy value="Ximp" />
 
-    <strategy value="ManualCommands" />
+    <!-- uncomment the strategy you want to use  -->
+    <!-- <strategy value="NUSBot" />  -->
+   
+    <!-- <strategy value="BaseBehavior" />  -->
+    <!-- <strategy value="Explore" />  -->
+    <!-- <strategy value="Expand" />  -->
+    <!-- <strategy value="PackAndAttack" />  -->
+
+    <!-- <strategy value="ManualCommands" />  -->
     
-    <!-- <strategy value="Ximp" /> uncomment to activate Ximp -->
+
   </portfolio>
   
 	<read-dir value="bwapi-data/read/" />
